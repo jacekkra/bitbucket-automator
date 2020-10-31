@@ -6,7 +6,7 @@ I wrote this tool because in my company we didn't like the built-in automatic br
 
 ## How it works
 
-Let `MERGING_SEQUENCE` be "A,B,C,D"`
+Let `MERGING_SEQUENCE` be A,B,C,D
 
 1. Clone the repository to a separate directory, to avoid interfering with your work
 2. Fetch open pull requests
