@@ -1,3 +1,6 @@
+from appdirs import AppDirs
+import os
+
 from atlassian import Bitbucket
 
 from dotenv import load_dotenv
@@ -5,8 +8,6 @@ from dotenv import load_dotenv
 from git import Repo
 from git.exc import GitCommandError
 from git.exc import NoSuchPathError
-
-import os
 
 from requests.exceptions import HTTPError
 
@@ -21,23 +22,26 @@ REVIEWERS = os.getenv("REVIEWERS").split(",")
 USERNAME = os.getenv("USERNAME")
 
 ALREADY_UP_TO_DATE_MSG = "Already up to date."
-LOCAL_REPO_NAME = ".repository"
 
 bitbucket = Bitbucket(
     url=BITBUCKET_URL, username=USERNAME, password=PERSONAL_ACCESS_TOKEN
 )
 
+dirs = AppDirs("bitbucket-automator")
+
 
 def can_merge_without_conflicts(source: str, destination: str) -> bool:
+    local_repo_dir = os.path.join(dirs.user_cache_dir, PROJECT_KEY, REPOSITORY_SLUG)
+
     try:
-        local_repo = Repo(LOCAL_REPO_NAME)
+        local_repo = Repo(local_repo_dir)
     except NoSuchPathError:
         repo_data = bitbucket.get_repo(PROJECT_KEY, REPOSITORY_SLUG)
         link = next(
             link for link in repo_data["links"]["clone"] if link["name"] == "ssh"
         )
         url = link["href"]
-        local_repo = Repo.clone_from(url, LOCAL_REPO_NAME)
+        local_repo = Repo.clone_from(url, local_repo_dir)
 
     local_repo.git.reset("--hard")
     local_repo.remote().fetch("--prune")
