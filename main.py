@@ -9,6 +9,8 @@ from git import Repo
 from git.exc import GitCommandError
 from git.exc import NoSuchPathError
 
+import osascript
+
 from requests.exceptions import HTTPError
 
 load_dotenv()
@@ -51,6 +53,9 @@ def can_merge_without_conflicts(source: str, destination: str) -> bool:
         merge_output = local_repo.git.merge(f"origin/{source}")
     except GitCommandError as e:
         print(e.stdout.strip())
+        osascript.run(
+            f'display notification "{source} -> {destination}" with title "Conflicts!"'
+        )
         return False
     else:
         print(merge_output)
