@@ -63,7 +63,7 @@ def can_merge_without_conflicts(source: str, destination: str) -> bool:
 
 
 def submit_pull_request(source: str, destination: str):
-    title = f"Merge {source} to {destination}"
+    title = f"Merge {source} into {destination}"
     pull_request = bitbucket.open_pull_request(
         PROJECT_KEY,
         REPOSITORY_SLUG,

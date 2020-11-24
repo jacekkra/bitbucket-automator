@@ -23,5 +23,5 @@ The script exits after going through the branches once. To automate it further, 
 
 ## Future improvements
 
-- [ ] Notify the user when conflicts are detected
+- [x] Notify the user when conflicts are detected
 - [ ] Optimize Git operations: shallow clone, better conflict and up-to-dateness detection
